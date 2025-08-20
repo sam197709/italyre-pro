@@ -1,0 +1,18 @@
+<div class="agency-section">
+  <h3>Per Agenzie Immobiliari</h3>
+  <p>Servizi innovativi per raggiungere investitori cinesi</p>
+  <div class="services">
+    <div class="service">
+      <h4>Marketing Globale</h4>
+      <p>Collegamento diretto con il mercato cinese</p>
+    </div>
+    <div class="service">
+      <h4>Traduzioni Automatiche</h4>
+      <p>AI Tongyi Qianwen per traduzioni in cinese</p>
+    </div>
+    <div class="service">
+      <h4>Visite Virtuali</h4>
+      <p>3D tours delle proprietà</p>
+    </div>
+  </div>
+</div>
