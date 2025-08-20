@@ -1,0 +1,6 @@
+document.getElementById('privateForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  // Invia i dati a un servizio di backend
+  alert('Proprietà inviata con successo!');
+  this.reset();
+});
