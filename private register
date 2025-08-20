@@ -1,0 +1,13 @@
+<div class="private-form">
+  <h3>Pubblica Gratuitamente</h3>
+  <p>Privati: inserisci la tua proprietà con massimo 3 foto</p>
+  <form id="privateForm">
+    <input type="text" placeholder="Nome" required>
+    <input type="email" placeholder="Email" required>
+    <input type="text" placeholder="Telefono" required>
+    <input type="text" placeholder="Località" required>
+    <input type="text" placeholder="Prezzo" required>
+    <input type="file" accept="image/*" multiple required>
+    <button type="submit">Invia Proprietà</button>
+  </form>
+</div>
