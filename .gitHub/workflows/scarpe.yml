@@ -1,0 +1,32 @@
+name: Auto-Scraping Annunci
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # Ogni 6 ore
+  workflow_dispatch:  # Manuale
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4
+      
+      - name: Run scraper
+        run: python scraper.py
+      
+      - name: Commit and push
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Auto-update: Nuovi annunci immobiliari" || exit 0
+          git push
