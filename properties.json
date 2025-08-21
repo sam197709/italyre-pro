@@ -1,4 +1,54 @@
-{
+<section class="search-section">
+  <div class="container">
+    <h2 class="section-title">Trova la Tua Proprietà Ideale</h2>
+    <div class="search-filters">
+      <div class="filter-group">
+        <label>Ricerca Libera</label>
+        <input type="text" id="search-input" placeholder="Cerca per titolo, località...">
+      </div>
+      
+      <div class="filter-group">
+        <label>Località</label>
+        <select id="location-filter">
+          <option value="">Tutte le località</option>
+          <option value="milano">Milano</option>
+          <option value="roma">Roma</option>
+          <option value="firenze">Firenze</option>
+          <option value="napoli">Napoli</option>
+          <option value="torino">Torino</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label>Prezzo Minimo (€)</label>
+        <input type="number" id="min-price" placeholder="0">
+      </div>
+      
+      <div class="filter-group">
+        <label>Prezzo Massimo (€)</label>
+        <input type="number" id="max-price" placeholder="1000000">
+      </div>
+      
+      <div class="filter-group">
+        <label>Camere da Letto</label>
+        <select id="bedrooms-filter">
+          <option value="">Qualsiasi</option>
+          <option value="1">1+</option>
+          <option value="2">2+</option>
+          <option value="3">3+</option>
+          <option value="4">4+</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label>&nbsp;</label>
+        <button onclick="searchProperties()" class="search-button">
+          Cerca Proprietà
+        </button>
+      </div>
+    </div>
+  </div>
+</section>{
   "properties": [
     {
       "id": "initial-1",
@@ -31,4 +81,54 @@
   "total_count": 3,
   "last_updated": "2023-08-22T10:00:00Z",
   "sources_used": ["Demo"]
-}
+}<section class="search-section">
+  <div class="container">
+    <h2 class="section-title">Trova la Tua Proprietà Ideale</h2>
+    <div class="search-filters">
+      <div class="filter-group">
+        <label>Ricerca Libera</label>
+        <input type="text" id="search-input" placeholder="Cerca per titolo, località...">
+      </div>
+      
+      <div class="filter-group">
+        <label>Località</label>
+        <select id="location-filter">
+          <option value="">Tutte le località</option>
+          <option value="milano">Milano</option>
+          <option value="roma">Roma</option>
+          <option value="firenze">Firenze</option>
+          <option value="napoli">Napoli</option>
+          <option value="torino">Torino</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label>Prezzo Minimo (€)</label>
+        <input type="number" id="min-price" placeholder="0">
+      </div>
+      
+      <div class="filter-group">
+        <label>Prezzo Massimo (€)</label>
+        <input type="number" id="max-price" placeholder="1000000">
+      </div>
+      
+      <div class="filter-group">
+        <label>Camere da Letto</label>
+        <select id="bedrooms-filter">
+          <option value="">Qualsiasi</option>
+          <option value="1">1+</option>
+          <option value="2">2+</option>
+          <option value="3">3+</option>
+          <option value="4">4+</option>
+        </select>
+      </div>
+      
+      <div class="filter-group">
+        <label>&nbsp;</label>
+        <button onclick="searchProperties()" class="search-button">
+          Cerca Proprietà
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
