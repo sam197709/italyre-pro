@@ -1,10 +1,386 @@
-<!DOCTYPE html>
-<html>
+<<!DOCTYPE html>
+<html lang="it">
 <head>
-    <title>Italyre Pro</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Italyre Pro - Proprietà di Lusso</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        nav a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            padding: 15px 30px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .properties {
+            padding: 50px 0;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .property-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .property-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .property-info {
+            padding: 20px;
+        }
+
+        .property-price {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .property-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .property-location {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .property-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-value {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.2rem;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .property-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .feature-tag {
+            background: #ecf0f1;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .view-details {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s ease;
+        }
+
+        .view-details:hover {
+            opacity: 0.9;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Benvenuto su Italyre Pro!</h1>
-    <p>Il tuo sito è operativo.</p>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Italyre Pro</div>
+                <nav>
+                    <a href="#proprietà">Proprietà</a>
+                    <a href="#chi-siamo">Chi Siamo</a>
+                    <a href="#contatti">Contatti</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Proprietà di Lusso in Versilia, Costa Smeralda e Milano</h1>
+            <p>Il tuo agente immobiliare AI per il mercato italiano</p>
+            <div class="search-bar">
+                <input type="text" placeholder="Cerca per località, prezzo, camere...">
+                <button>Cerca</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="properties" id="proprietà">
+        <div class="container">
+            <h2 class="section-title">Proprietà in Evidenza</h2>
+            <div class="properties-grid">
+                <!-- Proprietà 1 -->
+                <div class="property-card">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Villa Versilia" class="property-image">
+                        <div class="property-price">€850.000</div>
+                    </div>
+                    <div class="property-info">
+                        <h3 class="property-title">Lussuoso Appartamento a Milano</h3>
+                        <p class="property-location">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                            </svg>
+                            Milano, Centro Storico
+                        </p>
+                        <div class="property-details">
+                            <div class="detail-item">
+                                <div class="detail-value">3</div>
+                                <div class="detail-label">Camere</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-value">2</div>
+                                <div class="detail-label">Bagni</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-value">145</div>
+                                <div class="detail-label">mq</div>
+                            </div>
+                        </div>
+                        <div class="property-features">
+                            <span class="feature-tag">Ascensore</span>
+                            <span class="feature-tag">Cantina</span>
+                            <span class="feature-tag">Aria Condizionata</span>
+                            <span class="feature-tag">Terrazzo</span>
+                        </div>
+                        <button class="view-details">Visualizza Dettagli</button>
+                    </div>
+                </div>
+
+                <!-- Proprietà 2 -->
+                <div class="property-card">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Villa Roma" class="property-image">
+                        <div class="property-price">€1.200.000</div>
+                    </div>
+                    <div class="property-info">
+                        <h3 class="property-title">Villa Esclusiva a Roma</h3>
+                        <p class="property-location">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                            </svg>
+                            Roma, Parioli
+                        </p>
+                        <div class="property-details">
+                            <div class="detail-item">
+                                <div class="detail-value">4</div>
+                                <div class="detail-label">Camere</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-value">3</div>
+                                <div class="detail-label">Bagni</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-value">280</div>
+                                <div class="detail-label">mq</div>
+                            </div>
+                        </div>
+                        <div class="property-features">
+                            <span class="feature-tag">Giardino</span>
+                            <span class="feature-tag">Piscina</span>
+                            <span class="feature-tag">Garage</span>
+                            <span class="feature-tag">Sicurezza</span>
+                        </div>
+                        <button class="view-details">Visualizza Dettagli</button>
+                    </div>
+                </div>
+
+                <!-- Proprietà 3 -->
+                <div class="property-card">
+                    <div style="position: relative;">
+                        <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Attico Firenze" class="property-image">
+                        <div class="property-price">€680.000</div>
+                    </div>
+                    <div class="property-info">
+                        <h3 class="property-title">Attico Panoramico a Firenze</h3>
+                        <p class="property-location">
+                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                            </svg>
+                            Firenze, Oltrarno
+                        </p>
+                        <div class="property-details">
+                            <div class="detail-item">
+                                <div class="detail-value">2</div>
+                                <div class="detail-label">Camere</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-value">2</div>
+                                <div class="detail-label">Bagni</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-value">110</div>
+                                <div class="detail-label">mq</div>
+                            </div>
+                        </div>
+                        <div class="property-features">
+                            <span class="feature-tag">Terrazza</span>
+                            <span class="feature-tag">Tettoia</span>
+                            <span class="feature-tag">Climatizzazione</span>
+                            <span class="feature-tag">Finiture d'epoca</span>
+                        </div>
+                        <button class="view-details">Visualizza Dettagli</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Italyre Pro. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
 </body>
 </html>
