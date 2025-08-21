@@ -384,3 +384,35 @@
     </footer>
 </body>
 </html>
+<section class="recent-listings">
+  <div class="container">
+    <h2 class="section-title">Annunci Recenti (Auto-Aggiornati)</h2>
+    <div id="annunci-container" class="properties-grid">
+      <!-- Gli annunci verranno caricati qui dinamicamente -->
+    </div>
+  </div>
+</section>
+
+<script>
+  // Carica gli annunci dal file JSON
+  fetch('annunci.json')
+    .then(response => response.json())
+    .then(annunci => {
+      const container = document.getElementById('annunci-container');
+      annunci.forEach(annuncio => {
+        const card = document.createElement('div');
+        card.className = 'property-card';
+        card.innerHTML = `
+          <div class="property-info">
+            <h3 class="property-title">${annuncio.titolo}</h3>
+            <div class="property-price">${annuncio.prezzo}</div>
+            <div class="property-date">Aggiunto: ${annuncio.data_aggiunta}</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    })
+    .catch(error => {
+      console.error('Errore nel caricamento degli annunci:', error);
+    });
+</script>
