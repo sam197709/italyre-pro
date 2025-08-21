@@ -1,0 +1,34 @@
+{
+  "properties": [
+    {
+      "id": "initial-1",
+      "title": "Villa Esclusiva a Milano - Centro Storico",
+      "price": "€850.000",
+      "location": "Milano, Centro Storico",
+      "source": "Demo",
+      "scraped_at": "2023-08-22T10:00:00Z",
+      "featured": true
+    },
+    {
+      "id": "initial-2",
+      "title": "Attico Panoramico a Roma - Parioli", 
+      "price": "€1.200.000",
+      "location": "Roma, Parioli",
+      "source": "Demo",
+      "scraped_at": "2023-08-22T10:00:00Z",
+      "featured": true
+    },
+    {
+      "id": "initial-3",
+      "title": "Casa Storica a Firenze - Oltrarno",
+      "price": "€680.000",
+      "location": "Firenze, Oltrarno",
+      "source": "Demo",
+      "scraped_at": "2023-08-22T10:00:00Z", 
+      "featured": true
+    }
+  ],
+  "total_count": 3,
+  "last_updated": "2023-08-22T10:00:00Z",
+  "sources_used": ["Demo"]
+}
