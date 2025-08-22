@@ -1,0 +1,6 @@
+name: Auto-Scraping Proprietà Reali
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'  # Ogni 4 ore
+  workflow_dispatch:
