@@ -1,302 +1,95 @@
-<!DOCTYPE html><html><head>    <title>Italyre Pro</title></head><body>    <h1>Benvenuto su Italyre Pro!</h1>    <p>Il tuo sito è operativo.</p></body></html>
-0 commenti di commitCommenti0 ( 0 )Blocca conversazione<img src="images/villa-versilia.jpg" alt="Villa Versilia"><link rel="stylesheet" href="style.css">
-<script src="script.js"></script>
-<script>
-  // Sistema di ricerca e filtro avanzato
-  let allProperties = [];
-  
-  // Carica le proprietà dal file JSON
-  async function loadProperties() {
-    try {
-      const response = await fetch('properties.json');
-      const data = await response.json();
-      allProperties = data.properties;
-      displayProperties(allProperties);
-      updatePropertyCount(allProperties.length);
-    } catch (error) {
-      console.error('Errore nel caricamento delle proprietà:', error);
-      // Usa proprietà demo in caso di errore
-      allProperties = [
-        {
-          id: "fallback-1",
-          title: "Villa Esclusiva a Milano - Centro Storico",
-          price: "€850.000",
-          location: "Milano, Centro Storico", 
-          bedrooms: 3,
-          bathrooms: 2,
-          size: 145,
-          type: "Villa",
-          image: "https://placehold.co/400x300/4f46e5/ffffff?text=Milano+Luxury",
-          source: "Demo",
-          featured: true
-        },
-        {
-          id: "fallback-2",
-          title: "Attico Panoramico a Roma - Parioli",
-          price: "€1.200.000",
-          location: "Roma, Parioli",
-          bedrooms: 4,
-          bathrooms: 3, 
-          size: 280,
-          type: "Attico",
-          image: "https://placehold.co/400x300/059669/ffffff?text=Roma+Attico",
-          source: "Demo",
-          featured: true
-        },
-        {
-          id: "fallback-3", 
-          title: "Casa Storica a Firenze - Oltrarno",
-          price: "€680.000",
-          location: "Firenze, Oltrarno",
-          bedrooms: 2,
-          bathrooms: 2,
-          size: 110,
-          type: "Casa Storica",
-          image: "https://placehold.co/400x300/dc2626/ffffff?text=Firenze+Casa",
-          source: "Demo",
-          featured: true
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Italyre Pro - Annunci Immobiliari Auto-Aggiornati</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-      ];
-      displayProperties(allProperties);
-      updatePropertyCount(allProperties.length);
-    }
-  }
-  
-  // Visualizza le proprietà nella griglia
-  function displayProperties(properties) {
-    const container = document.querySelector('.properties-grid');
-    if (!container) return;
-    
-    container.innerHTML = '';
-    
-    properties.forEach(property => {
-      const card = document.createElement('div');
-      card.className = 'property-card';
-      if (property.featured) {
-        card.classList.add('featured');
-      }
-      
-      // Usa immagini placeholder se non ce ne sono
-      const imageUrl = property.image || `https://placehold.co/400x300/${Math.floor(Math.random()*16777215).toString(16)}/ffffff?text=${encodeURIComponent(property.title.substring(0, 20))}`;
-      
-      card.innerHTML = `
-        <div class="property-image-container">
-          <img src="${imageUrl}" alt="${property.title}" class="property-image">
-          ${property.featured ? '<div class="featured-badge">✨ IN EVIDENZA</div>' : ''}
-          <div class="property-price">${property.price || 'Prezzo su richiesta'}</div>
-        </div>
-        <div class="property-info">
-          <h3 class="property-title">${property.title}</h3>
-          <p class="property-location">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 16 0z"/>
-            </svg>
-            ${property.location}
-          </p>
-          <div class="property-meta">
-            <span class="meta-item">
-              <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"/>
-              </svg>
-              ${property.bedrooms || '?'} camere
-            </span>
-            <span class="meta-item">
-              <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/>
-              </svg>
-              ${property.bathrooms || '?'} bagni
-            </span>
-            <span class="meta-item">
-              <svg width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-                <path d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5-5M4 16v4m0 4h4m-4 0l-5-5m11 5v-4m0 4h-4m4 0l-5-5"/>
-              </svg>
-              ${property.size || '?'} mq
-            </span>
-          </div>
-          <div class="property-source">
-            Fonte: <strong>${property.source || 'Italyre Pro'}</strong>
-          </div>
-          <button class="view-details-btn" onclick="viewPropertyDetails('${property.id}')">
-            Visualizza Dettagli
-          </button>
-        </div>
-      `;
-      
-      container.appendChild(card);
-    });
-  }
-  
-  // Aggiorna il conteggio delle proprietà
-  function updatePropertyCount(count) {
-    const countElement = document.querySelector('.property-count');
-    if (countElement) {
-      countElement.textContent = `${count} proprietà trovate`;
-    }
-  }
-  
-  // Funzione di ricerca/filtro
-  function searchProperties() {
-    const searchTerm = document.getElementById('search-input').value.toLowerCase();
-    const locationFilter = document.getElementById('location-filter').value.toLowerCase();
-    const minPrice = document.getElementById('min-price').value;
-    const maxPrice = document.getElementById('max-price').value;
-    const bedrooms = document.getElementById('bedrooms-filter').value;
-    
-    const filtered = allProperties.filter(property => {
-      const matchesSearch = !searchTerm || 
-        property.title.toLowerCase().includes(searchTerm) ||
-        property.location.toLowerCase().includes(searchTerm);
-        
-      const matchesLocation = !locationFilter || 
-        property.location.toLowerCase().includes(locationFilter);
-        
-      const matchesMinPrice = !minPrice || 
-        (property.price && parsePrice(property.price) >= parseInt(minPrice));
-        
-      const matchesMaxPrice = !maxPrice || 
-        (property.price && parsePrice(property.price) <= parseInt(maxPrice));
-        
-      const matchesBedrooms = !bedrooms || 
-        (property.bedrooms && property.bedrooms >= parseInt(bedrooms));
-        
-      return matchesSearch && matchesLocation && matchesMinPrice && matchesMaxPrice && matchesBedrooms;
-    });
-    
-    displayProperties(filtered);
-    updatePropertyCount(filtered.length);
-  }
-  
-  // Funzione ausiliaria per estrarre il prezzo numerico
-  function parsePrice(priceString) {
-    if (!priceString) return 0;
-    // Rimuove simboli non numerici eccetto il punto e la virgola
-    const cleanPrice = priceString.replace(/[^\d,.]/g, '').replace(',', '.');
-    return parseFloat(cleanPrice) || 0;
-  }
-  
-  // Gestione eventi di ricerca
-  document.addEventListener('DOMContentLoaded', function() {
-    loadProperties();
-    
-    // Aggiungi event listeners ai filtri
-    const searchInput = document.getElementById('search-input');
-    const locationFilter = document.getElementById('location-filter');
-    const minPrice = document.getElementById('min-price');
-    const maxPrice = document.getElementById('max-price');
-    const bedroomsFilter = document.getElementById('bedrooms-filter');
-    
-    if (searchInput) searchInput.addEventListener('input', searchProperties);
-    if (locationFilter) locationFilter.addEventListener('change', searchProperties);
-    if (minPrice) minPrice.addEventListener('change', searchProperties);
-    if (maxPrice) maxPrice.addEventListener('change', searchProperties);
-    if (bedroomsFilter) bedroomsFilter.addEventListener('change', searchProperties);
-  });
-  
-  // Funzione per visualizzare i dettagli della proprietà
-  function viewPropertyDetails(propertyId) {
-    const property = allProperties.find(p => p.id === propertyId);
-    if (property) {
-      alert(`Dettagli della proprietà:\n\n${property.title}\n${property.location}\n${property.price}\n\nQuesta funzione sarà implementata completamente nella prossima versione.`);
-    }
-  }
-</script>
-<section class="ai-tools">
-  <div class="container">
-    <h2 class="section-title">Strumenti AI Innovativi</h2>
-    <div class="ai-grid">
-      <div class="ai-tool-card">
-        <div class="tool-icon">🤖</div>
-        <h3>Valutatore Automatico</h3>
-        <p>Stima il valore della tua proprietà in 30 secondi</p>
-        <button class="tool-button">Prova Gratis</button>
-      </div>
-      
-      <div class="ai-tool-card">
-        <div class="tool-icon">📊</div>
-        <h3>Analisi di Mercato</h3>
-        <p>Dati in tempo reale sul mercato immobiliare italiano</p>
-        <button class="tool-button">Visualizza Report</button>
-      </div>
-      
-      <div class="ai-tool-card">
-        <div class="tool-icon">💬</div>
-        <h3>Chatbot Immobiliare</h3>
-        <p>Assistente AI multilingue per i tuoi clienti</p>
-        <button class="tool-button">Avvia Chat</button>
-      </div>
-      
-      <div class="ai-tool-card">
-        <div class="tool-icon"> AR</div>
-        <h3>Realtà Aumentata</h3>
-        <p>Visualizza le proprietà in AR direttamente dal browser</p>
-        <button class="tool-button">Prova Demo</button>
-      </div>
-    </div>
-  </div>
-</section>
-<section class="reviews-section">
-  <div class="container">
-    <h2 class="section-title">Cosa Dicono i Nostri Clienti</h2>
-    <div class="reviews-grid">
-      <div class="review-card">
-        <div class="review-rating">★★★★★</div>
-        <p>"Ho venduto la mia villa a un investitore cinese in sole 2 settimane grazie a Italyre Pro!"</p>
-        <div class="review-author">
-          <div class="author-avatar">MR</div>
-          <div class="author-info">
-            <div class="author-name"><NAME></div>
-            <div class="author-role">Proprietario Villa Versilia</div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="review-card">
-        <div class="review-rating">★★★★★</div>
-        <p>"L'analisi di mercato AI mi ha fatto risparmiare mesi di lavoro. Straordinario!"</p>
-        <div class="review-author">
-          <div class="author-avatar">LB</div>
-          <div class="author-info">
-            <div class="author-name"><NAME></div>
-            <div class="author-role">Agenzia Immobiliare Roma</div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="review-card">
-        <div class="review-rating">★★★★★</div>
-        <p>"Il chatbot AI ha risposto a 1000+ richieste mentre ero in ferie. Incredibile!"</p>
-        <div class="review-author">
-          <div class="author-avatar">GV</div>
-          <div class="author-info">
-            <div class="author-name"><NAME></div>
-            <div class="author-role">Investitore Immobiliare</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<section class="predictive-analytics">
-  <div class="container">
-    <div class="analytics-content">
-      <div class="analytics-text">
-        <h3>Analisi Predittiva del Mercato</h3>
-        <p>Basata su 1.2M+ dati immobiliari italiani</p>
-      </div>
-      <div class="analytics-stats">
-        <div class="stat-item">
-          <div class="stat-number">+5.2%</div>
-          <div class="stat-label">Prezzo medio Milano</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">+3.8%</div>
-          <div class="stat-label">Prezzo medio Roma</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-number">+4.1%</div>
-          <div class="stat-label">Prezzo medio Firenze</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        nav a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            padding: 15px 30px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .properties-section {
+            background: white;
+            padding: 50px 0;
+            border-radius: 20px 20px 0 0
