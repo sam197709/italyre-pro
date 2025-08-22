@@ -198,3 +198,52 @@
   color: #666;
 }
 }
+.predictive-analytics {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  padding: 40px 0;
+}
+
+.analytics-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.analytics-text h3 {
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.analytics-text p {
+  opacity: 0.9;
+}
+
+.analytics-stats {
+  display: flex;
+  gap: 30px;
+}
+
+.stat-item .stat-number {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.stat-item .stat-label {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .analytics-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .analytics-stats {
+    margin-top: 20px;
+    justify-content: center;
+  }
+}
