@@ -2,5 +2,14 @@
   command = "npm run build"
   publish = "dist"
 
-[context.production.environment]
-  NODE_VERSION = "18"
+[[redirects]]
+  from = "/api/properties"
+  to = "https://realestateai-pro.s3.eu-central-1.amazonaws.com/properties.json"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/scrape"
+  to = "https://realestateai-pro.s3.eu-central-1.amazonaws.com/scraper-function"
+  status = 200
+  force = true
