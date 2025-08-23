@@ -1,0 +1,17 @@
+{
+  "name": "italyre-pro",
+  "version": "1.0.0",
+  "description": "Piattaforma immobiliare AI per il mercato italiano",
+  "main": "scraper.js",
+  "scripts": {
+    "scrape": "node scraper.js",
+    "scrape:daily": "node scheduler.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12"
+  },
+  "keywords": ["real-estate", "immobiliare", "italy"],
+  "author": "sam197709",
+  "license": "MIT"
+}
