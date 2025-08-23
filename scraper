@@ -19,7 +19,20 @@ class RealEstateScraper {
         {
           id: 1,
           title: "Lussuoso Appartamento a Milano",
-          price:
+          price: 850000,
+          location: "Milano, Centro Storico",
+          bedrooms: 3,
+          bathrooms: 2,
+          size: 145,
+          type: "Appartamento",
+          image: "https://placehold.co/400x300/4f46e5/ffffff?text=Milano+Luxury",
+          description: "Elegante appartamento nel cuore di Milano con vista sul Duomo.",
+          features: ["Ascensore", "Cantina", "Aria Condizionata", "Terrazzo"],
+          views: 1247,
+          published: "2 ore fa"
+        }
+      ];
+      
       console.log(`Trovate ${properties.length} proprietà`);
       return properties;
     } catch (error) {
@@ -30,4 +43,3 @@ class RealEstateScraper {
 }
 
 module.exports = RealEstateScraper;
-```
