@@ -28,19 +28,4 @@ runScraping();
 // Pianifica l'esecuzione ogni 24 ore
 setInterval(runScraping, 86400000); // 24 ore in millisecondi
 {
-  "name": "italyre-pro",
-  "version": "1.0.0",
-  "description": "Piattaforma immobiliare AI per il mercato italiano",
-  "main": "index.html",
-  "scripts": {
-    "build": "echo 'Build completed successfully'",
-    "start": "echo 'Starting server...'"
-  },
-  "dependencies": {
-    "axios": "^1.6.0",
-    "cheerio": "^1.0.0-rc.12"
-  },
-  "keywords": ["real-estate", "immobiliare", "italy"],
-  "author": "sam197709",
-  "license": "MIT"
-}
+ 
