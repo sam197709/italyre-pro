@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Italyre.cn - 意大利房地产投资平台</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #dc143c 0%, #b22222 100%);
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        .chinese-header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px 0;
+            border-bottom: 3px solid gold;
+        }
+
+        .dragon-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .dragon-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+            color: gold;
+        }
+
+        .chinese-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+            color: gold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .chinese-subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            opacity: 0.9;
+            margin-bottom: 30px;
+        }
+
+        .property-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .chinese-property-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid gold;
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+
+        .chinese-property-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .property-price-cny {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: gold;
+            margin-bottom: 10px;
+        }
+
+        .property-price-eur {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+        }
+
+        .feng-shui-benefits {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .feng-shui-item {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid gold;
+        }
+
+        .agency-section {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 40px 20px;
+            margin: 40px 0;
+            border-top: 3px solid gold;
+            border-bottom: 3px solid gold;
+        }
+
+        .agency-title {
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 20px;
+            color: gold;
+        }
+
+        .agency-pricing {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pricing-tier {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 2px solid gold;
+        }
+
+        .tier-price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: gold;
+            margin: 15px 0;
+        }
+
+        .call-to-action {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, gold 0%, #ffd700 100%);
+            color: #dc143c;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.05);
+           
