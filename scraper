@@ -20,3 +20,14 @@ class RealEstateScraper {
           id: 1,
           title: "Lussuoso Appartamento a Milano",
           price:
+      console.log(`Trovate ${properties.length} proprietà`);
+      return properties;
+    } catch (error) {
+      console.error('Errore nello scraping:', error.message);
+      return [];
+    }
+  }
+}
+
+module.exports = RealEstateScraper;
+```
