@@ -1,0 +1,36 @@
+// Sistema di indicizzazione SEO per proprietà simulate
+const seoOptimization = {
+  // Genera URL SEO-friendly per ogni proprietà
+  generateSEOUrl: (property) => {
+    return `/proprieta/${property.location.toLowerCase().replace(/\s+/g, '-')}/${property.id}`;
+  },
+  
+  // Genera meta tags dinamici
+  generateMetaTags: (property) => {
+    return {
+      title: `${property.title} - ${property.location} | Italyre Pro`,
+      description: `${property.description.substring(0, 150)}... Scopri questa esclusiva proprietà a ${property.location}.`,
+      keywords: `${property.type}, ${property.location}, immobiliare, lusso, vendita case, ${property.bedrooms} camere`
+    };
+  },
+  
+  // Genera structured data per Google
+  generateStructuredData: (property) => {
+    return {
+      "@context": "https://schema.org",
+      "@type": "RealEstateListing",
+      "name": property.title,
+      "description": property.description,
+      "offers": {
+        "@type": "Offer",
+        "price": property.price,
+        "priceCurrency": "EUR"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": property.location.split(',')[0],
+        "addressRegion": property.location.split(',')[1] || property.location
+      }
+    };
+  }
+};
