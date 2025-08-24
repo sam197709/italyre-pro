@@ -1,0 +1,185 @@
+// File: components/EmailPropertyAdder.jsx
+import React, { useState } from 'react';
+
+const EmailPropertyAdder = () => {
+  const [emailContent, setEmailContent] = useState('');
+  const [parsedProperty, setParsedProperty] = useState(null);
+  const [isParsing, setIsParsing] = useState(false);
+  
+  const parseEmailContent = () => {
+    if (!emailContent.trim()) return;
+    
+    setIsParsing(true);
+    
+    // Simula l'analisi dell'email con AI
+    setTimeout(() => {
+      const property = {
+        id: `email-${Date.now()}`,
+        title: extractTitleFromEmail(emailContent),
+        price: extractPriceFromEmail(emailContent),
+        location: extractLocationFromEmail(emailContent) || "Sanya, Hainan",
+        bedrooms: extractBedroomsFromEmail(emailContent),
+        bathrooms: extractBathroomsFromEmail(emailContent),
+        size: extractSizeFromEmail(emailContent),
+        type: extractTypeFromEmail(emailContent),
+        image: generateEmailPlaceholderImage(),
+        description: emailContent.substring(0, 200) + "...",
+        features: extractFeaturesFromEmail(emailContent),
+        views: 0,
+        published: "Adesso"
+      };
+      
+      setParsedProperty(property);
+      setIsParsing(false);
+    }, 2000);
+  };
+  
+  const extractTitleFromEmail = (text) => {
+    const titleLines = text.split('\n').filter(line => 
+      line.toLowerCase().includes('villa') || 
+      line.toLowerCase().includes('appartamento') ||
+      line.toLowerCase().includes('proprietà')
+    );
+    
+    return titleLines.length > 0 
+      ? titleLines[0].trim()
+      : "Proprietà da Email";
+  };
+  
+  const extractPriceFromEmail = (text) => {
+    const priceMatch = text.match(/(?:€|euro)\s*(\d+(?:\.\d+)?)/i);
+    return priceMatch ? parseInt(priceMatch[1].replace(/\./g, '')) : 600000;
+  };
+  
+  const extractLocationFromEmail = (text) => {
+    const locations = ['sanya', 'milano', 'roma', 'firenze', 'napoli', 'torino'];
+    const foundLocation = locations.find(loc => text.toLowerCase().includes(loc));
+    return foundLocation ? foundLocation.charAt(0).toUpperCase() + foundLocation.slice(1) : null;
+  };
+  
+  const extractBedroomsFromEmail = (text) => {
+    const bedroomMatch = text.match(/(\d+)\s*(?:camera|camere|stanza|stanze)/i);
+    return bedroomMatch ? parseInt(bedroomMatch[1]) : 2;
+  };
+  
+  const extractBathroomsFromEmail = (text) => {
+    const bathroomMatch = text.match(/(\d+)\s*(?:bagno|bagni)/i);
+    return bathroomMatch ? parseInt(bathroomMatch[1]) : 1;
+  };
+  
+  const extractSizeFromEmail = (text) => {
+    const sizeMatch = text.match(/(\d+)\s*(?:mq|metri)/i);
+    return sizeMatch ? parseInt(sizeMatch[1]) : 100;
+  };
+  
+  const extractTypeFromEmail = (text) => {
+    const types = ['appartamento', 'villa', 'attico', 'casa'];
+    const foundType = types.find(type => text.toLowerCase().includes(type));
+    return foundType ? foundType.charAt(0).toUpperCase() + foundType.slice(1) : "Appartamento";
+  };
+  
+  const extractFeaturesFromEmail = (text) => {
+    const allFeatures = ['ascensore', 'cantina', 'aria condizionata', 'terrazzo', 'giardino', 'piscina', 'garage'];
+    return allFeatures.filter(feature => text.toLowerCase().includes(feature));
+  };
+  
+  const generateEmailPlaceholderImage = () => {
+    const colors = ['4f46e5', '059669', 'dc2626', '7c3aed', '0891b2'];
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+    return `https://placehold.co/400x300/${randomColor}/ffffff?text=Email+Property`;
+  };
+  
+  const saveEmailProperty = async () => {
+    if (parsedProperty) {
+      // In una versione reale, questo salverebbe nel database
+      console.log('Proprietà da email salvata:', parsedProperty);
+      alert('Proprietà salvata con successo!');
+      setParsedProperty(null);
+      setEmailContent('');
+    }
+  };
+  
+  return (
+    <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+      <h3 className="text-xl font-bold text-gray-900 mb-4">Aggiungi Proprietà tramite Email</h3>
+      
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-2">Incolla il contenuto dell'email</label>
+        <textarea
+          value={emailContent}
+          onChange={(e) => setEmailContent(e.target.value)}
+          rows={6}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          placeholder="Incolla qui il contenuto dell'email con i dettagli della proprietà..."
+        ></textarea>
+      </div>
+      
+      <div className="flex justify-between items-center mb-6">
+        <div className="text-sm text-gray-600">
+          Invia le email a: <strong><EMAIL></strong>
+        </div>
+        <button
+          onClick={parseEmailContent}
+          disabled={isParsing || !emailContent.trim()}
+          className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 disabled:bg-gray-400"
+        >
+          {isParsing ? 'Analisi in corso...' : 'Analizza Email'}
+        </button>
+      </div>
+      
+      {parsedProperty && (
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6">
+          <h4 className="text-lg font-bold text-gray-900 mb-4">Proprietà Analizzata</h4>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <div>
+              <img
+                src={parsedProperty.image}
+                alt={parsedProperty.title}
+                className="w-full h-48 object-cover rounded-lg mb-4"
+              />
+            </div>
+            
+            <div>
+              <h5 className="text-xl font-bold text-gray-900 mb-2">{parsedProperty.title}</h5>
+              <p className="text-gray-600 mb-2">{parsedProperty.location}</p>
+              <p className="text-2xl font-bold text-blue-600 mb-4">{formatPrice(parsedProperty.price)}</p>
+              
+              <div className="grid grid-cols-3 gap-2 mb-4">
+                <div className="text-center">
+                  <div className="text-lg font-bold text-gray-900">{parsedProperty.bedrooms}</div>
+                  <div className="text-xs text-gray-600">Camere</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg font-bold text-gray-900">{parsedProperty.bathrooms}</div>
+                  <div className="text-xs text-gray-600">Bagni</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg font-bold text-gray-900">{parsedProperty.size}</div>
+                  <div className="text-xs text-gray-600">mq</div>
+                </div>
+              </div>
+              
+              <div className="flex flex-wrap gap-2 mb-4">
+                {parsedProperty.features.map((feature, index) => (
+                  <span key={index} className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs">
+                    {feature}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+          
+          <button
+            onClick={saveEmailProperty}
+            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
+          >
+            Salva Proprietà
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default EmailPropertyAdder;
