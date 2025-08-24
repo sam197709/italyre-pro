@@ -1,0 +1,130 @@
+// File: components/DragDropUploader.jsx
+import React, { useState } from 'react';
+
+const DragDropUploader = () => {
+  const [dragActive, setDragActive] = useState(false);
+  const [uploadedProperties, setUploadedProperties] = useState([]);
+  
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+  
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      // Processa i file trascinati
+      const files = Array.from(e.dataTransfer.files);
+      processFiles(files);
+    }
+  };
+  
+  const processFiles = (files) => {
+    files.forEach(file => {
+      if (file.type === 'application/json') {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          try {
+            const properties = JSON.parse(e.target.result);
+            uploadPropertiesToDatabase(properties);
+          } catch (error) {
+            console.error('Errore nel parsing del file JSON:', error);
+          }
+        };
+        reader.readAsText(file);
+      } else if (file.type.startsWith('image/')) {
+        // Carica l'immagine e crea una nuova proprietà
+        uploadImageAndCreateProperty(file);
+      }
+    });
+  };
+  
+  const uploadPropertiesToDatabase = async (properties) => {
+    // In una versione reale, questo caricherebbe nel database Supabase
+    console.log('Proprietà caricate:', properties);
+    setUploadedProperties(prev => [...prev, ...properties]);
+    
+    // Mostra notifica di successo
+    alert(`Caricate ${properties.length} proprietà con successo!`);
+  };
+  
+  const uploadImageAndCreateProperty = async (imageFile) => {
+    // In una versione reale, questo caricherebbe l'immagine e creerebbe la proprietà
+    console.log('Immagine caricata:', imageFile.name);
+    
+    // Crea una proprietà simulata basata sull'immagine
+    const newProperty = {
+      id: `drop-${Date.now()}`,
+      title: `Proprietà da ${imageFile.name}`,
+      price: Math.floor(Math.random() * 1000000) + 200000,
+      location: "Sanya, Hainan",
+      bedrooms: Math.floor(Math.random() * 4) + 1,
+      bathrooms: Math.floor(Math.random() * 3) + 1,
+      size: Math.floor(Math.random() * 200) + 80,
+      type: ["Appartamento", "Villa", "Attico"][Math.floor(Math.random() * 3)],
+      image: URL.createObjectURL(imageFile),
+      description: "Proprietà aggiunta tramite drag & drop uploader",
+      features: ["Ascensore", "Cantina", "Aria Condizionata", "Terrazzo"].slice(0, Math.floor(Math.random() * 4) + 1),
+      views: 0,
+      published: "Adesso"
+    };
+    
+    setUploadedProperties(prev => [newProperty, ...prev]);
+    alert('Proprietà creata con successo dal file immagine!');
+  };
+  
+  return (
+    <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
+      <h3 className="text-xl font-bold text-gray-900 mb-4">Aggiungi Proprietà in Tempo Reale</h3>
+      
+      <div 
+        className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors ${
+          dragActive ? 'border-blue-500 bg-blue-50' : 'border-gray-300 bg-gray-50'
+        }`}
+        onDragEnter={handleDrag}
+        onDragLeave={handleDrag}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
+      >
+        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+          </svg>
+        </div>
+        <h4 className="text-lg font-bold text-gray-900 mb-2">Trascina e Rilascia</h4>
+        <p className="text-gray-600 mb-4">Trascina qui file JSON o immagini per aggiungere proprietà in tempo reale</p>
+        <p className="text-sm text-gray-500">Supporta: .json, .jpg, .png, .webp</p>
+      </div>
+      
+      {uploadedProperties.length > 0 && (
+        <div className="mt-6">
+          <h4 className="text-lg font-bold text-gray-900 mb-4">Proprietà Aggiunte di Recente</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {uploadedProperties.slice(0, 3).map(property => (
+              <div key={property.id} className="bg-gray-50 rounded-lg p-4">
+                <img
+                  src={property.image}
+                  alt={property.title}
+                  className="w-full h-32 object-cover rounded-lg mb-2"
+                />
+                <h5 className="font-bold text-gray-900">{property.title}</h5>
+                <p className="text-gray-600 text-sm">{property.location}</p>
+                <p className="text-blue-600 font-bold">{formatPrice(property.price)}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default DragDropUploader;
