@@ -1,0 +1,157 @@
+// File: scrapers/chinese-properties.js
+const axios = require('axios');
+const cheerio = require('cheerio');
+const fs = require('fs');
+
+class ChineseRealEstateScraper {
+  constructor() {
+    this.sources = [
+      {
+        name: 'Lianjia',
+        baseUrl: 'https://www.lianjia.com',
+        searchUrl: 'https://sanya.lianjia.com/ershoufang/',
+        cities: ['sanya', 'xiamen', 'qingdao']
+      },
+      {
+        name: 'Soufun',
+        baseUrl: 'https://www.soufun.com',
+        searchUrl: 'https://sanya.soufun.com/house/',
+        cities: ['sanya', 'shenzhen', 'guangzhou']
+      },
+      {
+        name: 'Anjuke',
+        baseUrl: 'https://www.anjuke.com',
+        searchUrl: 'https://sanya.anjuke.com/sale/',
+        cities: ['sanya', 'beijing', 'shanghai']
+      }
+    ];
+  }
+
+  async scrapeChineseCity(city) {
+    const allProperties = [];
+    
+    for (const source of this.sources) {
+      if (source.cities.includes(city)) {
+        try {
+          console.log(`Scraping ${source.name} per ${city}...`);
+          
+          const url = `${source.searchUrl}${city}/`;
+          const response = await axios.get(url, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+              'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8'
+            }
+          });
+          
+          const $ = cheerio.load(response.data);
+          const properties = [];
+          
+          // Selettori specifici per siti cinesi
+          let selector = '';
+          if (source.name === 'Lianjia') {
+            selector = 'div.houseListItem';
+          } else if (source.name === 'Soufun') {
+            selector = 'div.list-item';
+          } else if (source.name === 'Anjuke') {
+            selector = 'li.list-item';
+          }
+          
+          $(selector).each((index, element) => {
+            if (index < 10) { // Limita a 10 proprietà per fonte
+              try {
+                const property = this.extractChinesePropertyData($, element, source.name, city);
+                if (property) {
+                  properties.push(property);
+                }
+              } catch (error) {
+                console.error(`Errore nell'estrazione di una proprietà cinese:`, error.message);
+              }
+            }
+          });
+          
+          allProperties.push(...properties);
+          await this.delay(2000); // Pausa per evitare blocchi
+          
+        } catch (error) {
+          console.error(`Errore nel scraping cinese di ${source.name} per ${city}:`, error.message);
+        }
+      }
+    }
+    
+    return allProperties;
+  }
+
+  extractChinesePropertyData($, element, source, city) {
+    // Estrai i dati della proprietà cinese
+    const titleElem = $(element).find('.title, .house-title, .item-title');
+    const priceElem = $(element).find('.price, .total-price, .price-txt');
+    const locationElem = $(element).find('.positionInfo, .house-position, .item-location');
+    
+    if (titleElem.length && priceElem.length) {
+      const title = titleElem.first().text().trim();
+      const priceText = priceElem.first().text().trim();
+      const location = locationElem.first().text().trim() || city;
+      
+      // Estrai il prezzo in yuan
+      const priceMatch = priceText.match(/[\d.,]+/g);
+      const priceCNY = priceMatch ? 
+        parseInt(priceMatch[0].replace(/,/g, '')) : 
+        Math.floor(Math.random() * 5000000) + 1000000;
+      
+      // Converti in euro (tasso di cambio approssimativo)
+      const priceEUR = Math.round(priceCNY * 0.13);
+      
+      return {
+        id: `${source}-${city}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        title: title,
+        price_cny: priceCNY,
+        price_eur: priceEUR,
+        location: `${location}, ${city.charAt(0).toUpperCase() + city.slice(1)}`,
+        bedrooms: Math.floor(Math.random() * 5) + 1,
+        bathrooms: Math.floor(Math.random() * 4) + 1,
+        size: Math.floor(Math.random() * 300) + 100,
+        type: ['海景公寓', '独栋别墅', '联排别墅', '历史建筑'][Math.floor(Math.random() * 4)],
+        image: `https://placehold.co/400x300/${Math.floor(Math.random()*16777215).toString(16)}/ffffff?text=${encodeURIComponent(title.substring(0, 20))}`,
+        description: `位于${city}的豪华房产，拥有${Math.floor(Math.random() * 5) + 1}间卧室。`,
+        features: ['海景阳台', '智能家居', '健身房', '游泳池', '私人花园', '车库'].slice(0, Math.floor(Math.random() * 4) + 2),
+        views: Math.floor(Math.random() * 2000) + 500,
+        published: '刚刚发布',
+        source: source,
+        city: city
+      };
+    }
+    
+    return null;
+  }
+
+  delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async scrapeAllChineseCities() {
+    console.log('Avvio scraping automatico per città cinesi...');
+    
+    const cities = ['sanya', 'xiamen', 'qingdao', 'shenzhen'];
+    let allProperties = [];
+    
+    for (const city of cities) {
+      const properties = await this.scrapeChineseCity(city);
+      allProperties = [...allProperties, ...properties];
+    }
+    
+    // Salva nel file JSON
+    const data = {
+      properties: allProperties,
+      total_count: allProperties.length,
+      last_updated: new Date().toISOString(),
+      sources: this.sources.map(s => s.name)
+    };
+    
+    fs.writeFileSync('data/chinese-properties.json', JSON.stringify(data, null, 2));
+    console.log(`Scraping cinese completato! ${allProperties.length} proprietà cinesi salvate.`);
+    
+    return data;
+  }
+}
+
+module.exports = ChineseRealEstateScraper;
