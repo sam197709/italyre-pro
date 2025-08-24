@@ -1,10 +1,493 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <title>Italyre Pro</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Italyre Pro - Mercato Immobiliare Italiano</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px 0;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        nav a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .search-bar {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            padding: 15px 30px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .properties {
+            padding: 50px 0;
+            background: white;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+            color: #2c3e50;
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .property-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .property-info {
+            padding: 20px;
+        }
+
+        .property-price {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .property-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .property-location {
+            color: #7f8c8d;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .property-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            text-align: center;
+        }
+
+        .detail-value {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 1.2rem;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .property-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .feature-tag {
+            background: #ecf0f1;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        .view-details {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s ease;
+        }
+
+        .view-details:hover {
+            opacity: 0.9;
+        }
+
+        footer {
+            background: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .properties-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Rilevamento lingua automatico */
+        .language-detector {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .language-switcher {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-    <h1>Benvenuto su Italyre Pro!</h1>
-    <p>Il tuo sito è operativo.</p>
+    <!-- Rilevamento lingua automatico -->
+    <div class="language-detector">
+        <div class="language-switcher" id="languageSwitcher">
+            Lingua: Italiano
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">Italyre Pro</div>
+                <nav>
+                    <a href="#proprietà">Proprietà</a>
+                    <a href="#chi-siamo">Chi Siamo</a>
+                    <a href="#contatti">Contatti</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="container">
+            <h1>Proprietà di Lusso in Versilia, Costa Smeralda e Milano</h1>
+            <p>Il tuo agente immobiliare AI per il mercato italiano</p>
+            <div class="search-bar">
+                <input type="text" placeholder="Cerca per località, prezzo, camere...">
+                <button>Cerca</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="properties" id="proprietà">
+        <div class="container">
+            <h2 class="section-title">Proprietà in Evidenza</h2>
+            <div class="properties-grid">
+                <!-- Proprietà 1 -->
+                <div class="property-card">
+                    <div class="relative">
+                        <img
+                            src="https://placehold.co/400x300/4f46e5/ffffff?text=Milano+Luxury"
+                            alt="Lussuoso Appartamento a Milano"
+                            class="property-image"
+                        />
+                        <div class="property-price">€850.000</div>
+                        <div class="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
+                            Appartamento
+                        </div>
+                    </div>
+                    
+                    <div class="property-info">
+                        <h3 class="property-title">Lussuoso Appartamento a Milano</h3>
+                        <p class="property-location">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Milano, Centro Storico
+                        </p>
+                        
+                        <div class="property-details">
+                            <div class="detail-item">
+                                <div class="detail-value">3</div>
+                                <div class="detail-label">Camere</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-value">2</div>
+                                <div class="detail-label">Bagni</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-value">145</div>
+                                <div class="detail-label">mq</div>
+                            </div>
+                        </div>
+
+                        <div class="property-features">
+                            <span class="feature-tag">Ascensore</span>
+                            <span class="feature-tag">Cantina</span>
+                            <span class="feature-tag">Aria Condizionata</span>
+                            <span class="feature-tag">Terrazzo</span>
+                        </div>
+
+                        <button class="view-details">Visualizza Dettagli</button>
+                    </div>
+                </div>
+
+                <!-- Proprietà 2 -->
+                <div class="property-card">
+                    <div class="relative">
+                        <img
+                            src="https://placehold.co/400x300/059669/ffffff?text=Roma+Villa"
+                            alt="Villa Esclusiva a Roma"
+                            class="property-image"
+                        />
+                        <div class="property-price">€1.200.000</div>
+                        <div class="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
+                            Villa
+                        </div>
+                    </div>
+                    
+                    <div class="property-info">
+                        <h3 class="property-title">Villa Esclusiva a Roma</h3>
+                        <p class="property-location">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Roma, Parioli
+                        </p>
+                        
+                        <div class="property-details">
+                            <div class="detail-item">
+                                <div class="detail-value">4</div>
+                                <div class="detail-label">Camere</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-value">3</div>
+                                <div class="detail-label">Bagni</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-value">280</div>
+                                <div class="detail-label">mq</div>
+                            </div>
+                        </div>
+
+                        <div class="property-features">
+                            <span class="feature-tag">Giardino</span>
+                            <span class="feature-tag">Piscina</span>
+                            <span class="feature-tag">Garage</span>
+                            <span class="feature-tag">Sistema di Sicurezza</span>
+                        </div>
+
+                        <button class="view-details">Visualizza Dettagli</button>
+                    </div>
+                </div>
+
+                <!-- Proprietà 3 -->
+                <div class="property-card">
+                    <div class="relative">
+                        <img
+                            src="https://placehold.co/400x300/dc2626/ffffff?text=Firenze+Attico"
+                            alt="Attico Panoramico a Firenze"
+                            class="property-image"
+                        />
+                        <div class="property-price">€680.000</div>
+                        <div class="absolute top-4 left-4 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
+                            Attico
+                        </div>
+                    </div>
+                    
+                    <div class="property-info">
+                        <h3 class="property-title">Attico Panoramico a Firenze</h3>
+                        <p class="property-location">
+                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            Firenze, Oltrarno
+                        </p>
+                        
+                        <div class="property-details">
+                            <div class="detail-item">
+                                <div class="detail-value">2</div>
+                                <div class="detail-label">Camere</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-value">2</div>
+                                <div class="detail-label">Bagni</div>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-value">110</div>
+                                <div class="detail-label">mq</div>
+                            </div>
+                        </div>
+
+                        <div class="property-features">
+                            <span class="feature-tag">Terrazza</span>
+                            <span class="feature-tag">Tettoia</span>
+                            <span class="feature-tag">Climatizzazione</span>
+                            <span class="feature-tag">Finiture d'epoca</span>
+                        </div>
+
+                        <button class="view-details">Visualizza Dettagli</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Italyre Pro. Tutti i diritti riservati.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Rilevamento lingua automatico MIGLIORATO
+        document.addEventListener('DOMContentLoaded', function() {
+            const userLang = navigator.language || navigator.userLanguage;
+            const languageSwitcher = document.getElementById('languageSwitcher');
+            
+            if (userLang.startsWith('zh')) {
+                // Se l'utente è cinese ma non siamo su italyre.c
+                if (!window.location.hostname.includes('italyre.c')) {
+                    languageSwitcher.innerHTML = '语言: 中文';
+                    languageSwitcher.style.background = 'linear-gradient(135deg, #ffd700 0%, #ffa500 100%)';
+                    languageSwitcher.style.color = '#333';
+                    
+                    // Mostra popup per reindirizzamento
+                    setTimeout(() => {
+                        if (confirm('检测到您的浏览器语言为中文。是否跳转到中文版本？')) {
+                            window.location.href = 'https://italyre.c';
+                        }
+                    }, 2000);
+                }
+            } else if (userLang.startsWith('en')) {
+                languageSwitcher.innerHTML = 'Language: English';
+                languageSwitcher.style.background = 'linear-gradient(135deg, #3498db 0%, #2980b9 100%)';
+                languageSwitcher.style.color = 'white';
+            } else {
+                languageSwitcher.innerHTML = 'Lingua: Italiano';
+                languageSwitcher.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                languageSwitcher.style.color = 'white';
+            }
+        });
+
+        // Funzionalità cerca
+        document.querySelector('.search-bar button').addEventListener('click', function() {
+            const searchTerm = document.querySelector('.search-bar input').value;
+            if (searchTerm.trim()) {
+                alert(`Ricerca per: ${searchTerm}\n\nIn una versione completa, questo mostrerebbe le proprietà corrispondenti.`);
+            }
+        });
+
+        // Funzionalità visualizza dettagli
+        document.querySelectorAll('.view-details').forEach(button => {
+            button.addEventListener('click', function() {
+                const propertyCard = this.closest('.property-card');
+                const propertyTitle = propertyCard.querySelector('.property-title').textContent;
+                alert(`Visualizzazione dettagli per: ${propertyTitle}\n\nIn una versione completa, questo aprirebbe una pagina con tutti i dettagli della proprietà.`);
+            });
+        });
+    </script>
 </body>
 </html>
