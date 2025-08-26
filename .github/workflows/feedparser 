@@ -1,0 +1,119 @@
+# File: aggregator/rss_aggregator.py
+import feedparser
+import requests
+import json
+from datetime import datetime
+import time
+
+class RSSRealEstateAggregator:
+    def __init__(self):
+        self.rss_feeds = [
+            {
+                "name": "Immobiliare.it RSS",
+                "url": "https://www.immobiliare.it/rss/vendita-case/",
+                "selectors": {
+                    "title": "title",
+                    "link": "link",
+                    "description": "description",
+                    "published": "published"
+                }
+            },
+            {
+                "name": "Idealista RSS",
+                "url": "https://www.idealista.it/rss/vendita-case/",
+                "selectors": {
+                    "title": "title",
+                    "link": "link",
+                    "description": "description",
+                    "published": "pubDate"
+                }
+            },
+            {
+                "name": "Casa.it RSS",
+                "url": "https://www.casa.it/rss/vendita/residenziale/",
+                "selectors": {
+                    "title": "title",
+                    "link": "link",
+                    "description": "description",
+                    "published": "pubDate"
+                }
+            }
+        ]
+    
+    def parse_rss_feed(self, feed_url):
+        """Parse RSS feed and extract property data"""
+        try:
+            feed = feedparser.parse(feed_url)
+            properties = []
+            
+            for entry in feed.entries:
+                # Extract property data from RSS entry
+                property_data = {
+                    "id": f"{feed.feed.title}-{entry.id}",
+                    "title": entry.title,
+                    "link": entry.link,
+                    "description": entry.description,
+                    "published": entry.published or entry.pubDate,
+                    "source": feed.feed.title,
+                    "scraped_at": datetime.now().isoformat()
+                }
+                
+                properties.append(property_data)
+                
+            return properties
+            
+        except Exception as e:
+            print(f"Errore nell'analisi del feed {feed_url}: {e}")
+            return []
+    
+    def aggregate_all_feeds(self):
+        """Aggregate properties from all RSS feeds"""
+        all_properties = []
+        
+        for feed in self.rss_feeds:
+            try:
+                print(f"Aggregando feed: {feed['name']}")
+                properties = self.parse_rss_feed(feed['url'])
+                all_properties.extend(properties)
+                print(f"Aggregati {len(properties)} proprietà da {feed['name']}")
+                
+            except Exception as e:
+                print(f"Errore nell'aggregazione del feed {feed['name']}: {e}")
+                continue
+        
+        return all_properties
+    
+    def save_to_database(self, properties):
+        """Save aggregated properties to database"""
+        try:
+            # Inserisci le proprietà nel database Supabase
+            response = requests.post(
+                'https://your-supabase-url.supabase.co/rest/v1/properties',
+                json=properties,
+                headers={
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer YOUR_SUPABASE_KEY'
+                }
+            )
+            
+            if response.status_code == 201:
+                print(f"Proprietà salvate con successo: {len(properties)}")
+                return True
+            else:
+                print(f"Errore nel salvataggio delle proprietà: {response.text}")
+                return False
+                
+        except Exception as e:
+            print(f"Errore nel salvataggio delle proprietà: {e}")
+            return False
+
+# Esegui l'aggregazione
+aggregator = RSSRealEstateAggregator()
+properties = aggregator.aggregate_all_feeds()
+
+# Salva nel database
+success = aggregator.save_to_database(properties)
+if success:
+    print("✅ Aggregazione completata con successo!")
+else:
+    print("❌ Errore nell'aggregazione.")
